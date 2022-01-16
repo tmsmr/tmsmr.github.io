@@ -4,9 +4,9 @@ class NetworkAnimationConfig {
         this.velocityFactor = 0.4
         this.maxConnDistance = 300
         this.nodeColor = "#eee"
-        this.nodeRadius = 1.5
+        this.nodeRadius = 1.8
         this.connColor = "#eee"
-        this.connLineWidth = 0.2
+        this.connLineWidth = 0.4
     }
 }
 
