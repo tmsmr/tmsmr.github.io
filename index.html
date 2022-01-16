@@ -1,0 +1,16 @@
+<html lang="en">
+<head>
+    <title>tmsmr.de</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="network" style="z-index: -1;"></canvas>
+</body>
+<script src="networkAnimation.js"></script>
+<script type="text/javascript" defer>
+    const conf = new NetworkAnimationConfig()
+    const net = new NetworkAnimation(document.getElementById("network"), conf)
+    net.animate()
+</script>
+</html>
