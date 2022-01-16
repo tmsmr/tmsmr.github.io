@@ -1,13 +1,12 @@
 class NetworkAnimationConfig {
     constructor() {
-        this.updatePeriodMs = 10
-        this.nodeDensity = 0.8
-        this.velocityFactor = 0.5
-        this.maxConnDistance = 250
-        this.nodeColor = "#e6dbc8"
-        this.nodeRadius = 0.75
-        this.connColor = "#e6dbc8"
-        this.connLineWidth = 0.15
+        this.nodeDensity = 0.4
+        this.velocityFactor = 0.4
+        this.maxConnDistance = 300
+        this.nodeColor = "#eee"
+        this.nodeRadius = 1.5
+        this.connColor = "#eee"
+        this.connLineWidth = 0.2
     }
 }
 
@@ -39,17 +38,14 @@ class NetworkAnimation {
         }
     }
 
-    tick() {
+    draw() {
         for (const node of this.nodes) node.update()
         if (this.alphaFadeState < 1) {
             this.alphaFadeState += 0.005
         } else {
             this.alphaFadeState = 1
         }
-        setTimeout(this.tick.bind(this), this.conf.updatePeriodMs)
-    }
 
-    draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.ctx.globalAlpha = 1 * this.alphaFadeState
@@ -88,7 +84,6 @@ class NetworkAnimation {
 
     animate() {
         this.reset();
-        this.tick();
         this.draw();
     }
 }
@@ -115,19 +110,4 @@ class Node {
         let dy = this.y - node.y
         return dx * dx + dy * dy
     }
-
-    /*distance(node) {
-        return Math.sqrt(this.squaredDistance(node))
-    }*/
 }
-
-/*class Conn {
-    constructor(a, b) {
-        this.a = a;
-        this.b = b;
-    }
-
-    same(a, b) {
-        return (this.a == a && this.b == b) || (this.a == b && this.b == a)
-    }
-}*/
