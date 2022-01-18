@@ -3,10 +3,11 @@ class NetworkAnimationConfig {
         this.nodeDensity = 0.4
         this.velocityFactor = 0.4
         this.maxConnDistance = 300
-        this.nodeColor = "#eee"
+        this.nodeColor = "#666688"
         this.nodeRadius = 1.8
-        this.connColor = "#eee"
+        this.connColor = "#666688"
         this.connLineWidth = 0.4
+        this.packetSpawnPeriodMax = 5000
     }
 }
 
@@ -15,6 +16,8 @@ class NetworkAnimation {
         this.canvas = canvas
         this.conf = conf
         this.ctx = this.canvas.getContext('2d')
+        this.squaredMaxConnDistance = this.conf.maxConnDistance * this.conf.maxConnDistance
+        this.transmission = undefined
         window.addEventListener("resize", this.reset.bind(this))
     }
 
@@ -62,19 +65,31 @@ class NetworkAnimation {
             this.ctx.fill();
         }
 
-        let squaredMaxConnDistance = this.conf.maxConnDistance * this.conf.maxConnDistance
-
         this.ctx.strokeStyle = this.conf.connColor
         this.ctx.lineWidth = this.conf.connLineWidth
         for (let i = 0; i < this.nodes.length; i++) {
             for (let j = i + 1; j < this.nodes.length; j++) {
                 let a = this.nodes[i]
                 let b = this.nodes[j]
-                if (a.squaredDistance(b) > squaredMaxConnDistance) continue
+                if (a.squaredDistance(b) > this.squaredMaxConnDistance) continue
                 this.ctx.beginPath();
                 this.ctx.moveTo(a.x, a.y);
                 this.ctx.lineTo(b.x, b.y);
-                this.ctx.globalAlpha = (1 - a.squaredDistance(b) / squaredMaxConnDistance) * this.alphaFadeState
+                this.ctx.globalAlpha = (1 - a.squaredDistance(b) / this.squaredMaxConnDistance) * this.alphaFadeState
+                this.ctx.stroke();
+            }
+        }
+
+        this.ctx.strokeStyle = "red"
+        this.ctx.lineWidth = 2
+        if(this.transmission) {
+            for (let i = 0; i < this.transmission.length - 1; i++) {
+                let a = this.nodes[this.transmission[i]]
+                let b = this.nodes[this.transmission[i + 1]]
+                this.ctx.beginPath();
+                this.ctx.moveTo(a.x, a.y);
+                this.ctx.lineTo(b.x, b.y);
+                this.ctx.globalAlpha = this.alphaFadeState
                 this.ctx.stroke();
             }
         }
@@ -82,8 +97,75 @@ class NetworkAnimation {
         window.requestAnimationFrame(this.draw.bind(this));
     }
 
+    sendPacket() {
+        if (this.nodes.length > 1) {
+            const ai = Math.floor(Math.random() * this.nodes.length)
+            let bi = ai
+            while(ai === bi) bi = Math.floor(Math.random() * this.nodes.length)
+
+            const path = this.shortestPath(ai, bi)
+            if(path) {
+                this.transmission = path
+            }
+        }
+        setTimeout(this.sendPacket.bind(this), 2000)
+    }
+
+    shortestPath(ai, bi) {
+        this.nodes.forEach(n => n.initPathFindingState())
+        let current = ai
+        this.nodes[current].distance = 0
+        while(this.nodes.filter(n => !n.visited).length > 0) {
+            let nearest = undefined
+            for(let i = 0; i < this.nodes.length; i++) {
+                if (current === i || this.nodes[i].visited) continue
+                let distance = this.nodes[current].squaredDistance(this.nodes[i])
+                if (distance > this.squaredMaxConnDistance) continue
+                distance += this.nodes[current].distance
+                if (distance < this.nodes[i].distance) {
+                    this.nodes[i].distance = distance
+                    this.nodes[i].parent = current
+                }
+                if(!nearest) {
+                    nearest = [i, distance]
+                } else {
+                    if (distance < nearest[1]) nearest = [i, distance]
+                }
+            }
+            this.nodes[current].visited = true
+            if (!nearest) {
+                let min = Infinity
+                let mini = undefined
+                for (let i = 0; i < this.nodes.length; i++) {
+                    if (this.nodes[i].visited) continue
+                    if (this.nodes[i].distance < min) {
+                        min = this.nodes[i].distance
+                        mini = i
+                    }
+                }
+                if (min === Infinity) {
+                    let next = this.nodes[bi].parent
+                    if (next === undefined) {
+                        return undefined
+                    }
+                    let path = []
+                    while(next !== ai) {
+                        path.push(next)
+                        next = this.nodes[next].parent
+                    }
+                    path.push(next)
+                    return path
+                }
+                else current = mini
+            } else {
+                current = nearest[0]
+            }
+        }
+    }
+
     animate() {
         this.reset();
+        this.sendPacket();
         this.draw();
     }
 }
@@ -96,6 +178,9 @@ class Node {
         this.y = Math.floor(Math.random() * this.max[1])
         this.dx = (Math.random() - 0.5) * vFactor
         this.dy = (Math.random() - 0.5) * vFactor
+        this.visited = undefined
+        this.distance = undefined
+        this.parent = undefined
     }
 
     update() {
@@ -109,5 +194,11 @@ class Node {
         let dx = this.x - node.x
         let dy = this.y - node.y
         return dx * dx + dy * dy
+    }
+
+    initPathFindingState() {
+        this.visited = false
+        this.distance = Infinity
+        this.parent = undefined
     }
 }
