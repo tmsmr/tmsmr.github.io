@@ -45,7 +45,6 @@ class NetworkAnimation {
     draw() {
         if (this.nodes.length < 1) {
             window.requestAnimationFrame(this.draw.bind(this));
-            console.log("NO NODES")
             return;
         }
         for (const node of this.nodes) node.update()
@@ -86,7 +85,7 @@ class NetworkAnimation {
             }
         }
 
-        this.ctx.strokeStyle = "red"
+        this.ctx.strokeStyle = "#4444AA"
         this.ctx.lineWidth = 2
         if (this.transmission) {
             for (let i = 0; i < this.transmission.length - 1; i++) {
