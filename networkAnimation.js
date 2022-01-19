@@ -1,7 +1,7 @@
 class NetworkAnimationConfig {
     constructor() {
-        this.nodeDensity = 0.4
-        this.velocityFactor = 0.4
+        this.nodeDensity = 1
+        this.velocityFactor = 8
         this.maxConnDistance = 300
         this.nodeColor = "#666688"
         this.nodeRadius = 1.8
@@ -25,6 +25,7 @@ class NetworkAnimation {
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
         this.alphaFadeState = 0
+        this.transmission = undefined
         this.populate()
     }
 
@@ -42,6 +43,11 @@ class NetworkAnimation {
     }
 
     draw() {
+        if (this.nodes.length < 1) {
+            window.requestAnimationFrame(this.draw.bind(this));
+            console.log("NO NODES")
+            return;
+        }
         for (const node of this.nodes) node.update()
         if (this.alphaFadeState < 1) {
             this.alphaFadeState += 0.005
@@ -82,7 +88,7 @@ class NetworkAnimation {
 
         this.ctx.strokeStyle = "red"
         this.ctx.lineWidth = 2
-        if(this.transmission) {
+        if (this.transmission) {
             for (let i = 0; i < this.transmission.length - 1; i++) {
                 let a = this.nodes[this.transmission[i]]
                 let b = this.nodes[this.transmission[i + 1]]
@@ -98,42 +104,72 @@ class NetworkAnimation {
     }
 
     sendPacket() {
-        if (this.nodes.length > 1) {
+        if(this.nodes.length >= 2) {
             const ai = Math.floor(Math.random() * this.nodes.length)
             let bi = ai
-            while(ai === bi) bi = Math.floor(Math.random() * this.nodes.length)
+            while (ai === bi) bi = Math.floor(Math.random() * this.nodes.length)
 
             const path = this.shortestPath(ai, bi)
-            if(path) {
+            if (path) {
                 this.transmission = path
             }
         }
-        setTimeout(this.sendPacket.bind(this), 2000)
+        setTimeout(this.sendPacket.bind(this), 50)
     }
 
+    /*
+    this function tries to find the shortest path between node a (node index ai) and b (node index bi) in this.nodes
+    to find that path, Dijkstra's algorithm (https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) is used
+
+    if there is no path available, undefined is returned
+    */
     shortestPath(ai, bi) {
+        // we are using the Node class itself to store the algorithm's states:
+        // - visited (false): this node was processed already
+        // - distance (Infinity): the current smallest distance to node a
+        // - parent (undefined): index of the next parent in the found path
+        // for every call, we have to reset these states
         this.nodes.forEach(n => n.initPathFindingState())
+
+        // select node a as current node, set distance to 0
         let current = ai
         this.nodes[current].distance = 0
-        while(this.nodes.filter(n => !n.visited).length > 0) {
+
+        while (true) {
             let nearest = undefined
-            for(let i = 0; i < this.nodes.length; i++) {
+
+            // 1) iterate all unvisited neighbours (for our use-case, nodes with a distance <= this.squaredMaxConnDistance) of the current node, and...
+            for (let i = 0; i < this.nodes.length; i++) {
                 if (current === i || this.nodes[i].visited) continue
                 let distance = this.nodes[current].squaredDistance(this.nodes[i])
                 if (distance > this.squaredMaxConnDistance) continue
+                // ...calculate the distance to the node through the current node
                 distance += this.nodes[current].distance
+                // ...if the new distance is smaller than the old one: replace the distance and assign the current node as parent
                 if (distance < this.nodes[i].distance) {
                     this.nodes[i].distance = distance
                     this.nodes[i].parent = current
                 }
-                if(!nearest) {
+                // ...check if this neighbour is the nearest one and replace the node index/distance if so
+                if (!nearest) {
                     nearest = [i, distance]
                 } else {
                     if (distance < nearest[1]) nearest = [i, distance]
                 }
             }
+
+            // 2) mark the current node as visited
             this.nodes[current].visited = true
-            if (!nearest) {
+
+            // 3a) select the nearest neighbour as current node
+            if (nearest) {
+                current = nearest[0]
+            }
+                // 3b) if no unvisited neighbour was found, try to select the node with
+                //     - the smallest distance
+                //     - which was not visited already
+            //     as current node
+            else {
                 let min = Infinity
                 let mini = undefined
                 for (let i = 0; i < this.nodes.length; i++) {
@@ -149,16 +185,13 @@ class NetworkAnimation {
                         return undefined
                     }
                     let path = []
-                    while(next !== ai) {
+                    while (next !== ai) {
                         path.push(next)
                         next = this.nodes[next].parent
                     }
                     path.push(next)
                     return path
-                }
-                else current = mini
-            } else {
-                current = nearest[0]
+                } else current = mini
             }
         }
     }
