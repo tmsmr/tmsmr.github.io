@@ -104,7 +104,7 @@ class NetworkAnimation {
     }
 
     sendPacket() {
-        if(this.nodes.length >= 2) {
+        if (this.nodes.length >= 2) {
             const ai = Math.floor(Math.random() * this.nodes.length)
             let bi = ai
             while (ai === bi) bi = Math.floor(Math.random() * this.nodes.length)
@@ -118,7 +118,7 @@ class NetworkAnimation {
     }
 
     /*
-    this function tries to find the shortest path between node a (node index ai) and b (node index bi) in this.nodes
+    shortestPath tries to find the shortest path between node a (node index ai) and b (node index bi) in this.nodes
     to find that path, Dijkstra's algorithm (https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) is used
 
     if there is no path available, undefined is returned
@@ -138,14 +138,14 @@ class NetworkAnimation {
         while (true) {
             let nearest = undefined
 
-            // 1) iterate all unvisited neighbours (for our use-case, nodes with a distance <= this.squaredMaxConnDistance) of the current node, and...
+            // 1) iterate all unvisited neighbours (for our use case, nodes with a distance <= this.squaredMaxConnDistance) of the current node, and...
             for (let i = 0; i < this.nodes.length; i++) {
                 if (current === i || this.nodes[i].visited) continue
                 let distance = this.nodes[current].squaredDistance(this.nodes[i])
                 if (distance > this.squaredMaxConnDistance) continue
                 // ...calculate the distance to the node through the current node
                 distance += this.nodes[current].distance
-                // ...if the new distance is smaller than the old one: replace the distance and assign the current node as parent
+                // ...if the new distance is smaller than the old one: replace it and assign the current node as parent
                 if (distance < this.nodes[i].distance) {
                     this.nodes[i].distance = distance
                     this.nodes[i].parent = current
@@ -161,37 +161,42 @@ class NetworkAnimation {
             // 2) mark the current node as visited
             this.nodes[current].visited = true
 
-            // 3a) select the nearest neighbour as current node
             if (nearest) {
+                // 3a) select the nearest neighbour as current node
                 current = nearest[0]
-            }
+            } else {
                 // 3b) if no unvisited neighbour was found, try to select the node with
                 //     - the smallest distance
-                //     - which was not visited already
-            //     as current node
-            else {
-                let min = Infinity
-                let mini = undefined
+                //     - which was not visited before
+                //     as current node
+                let candidate = undefined
                 for (let i = 0; i < this.nodes.length; i++) {
                     if (this.nodes[i].visited) continue
-                    if (this.nodes[i].distance < min) {
-                        min = this.nodes[i].distance
-                        mini = i
+                    if (!candidate) {
+                        candidate = [i, this.nodes[i].distance]
+                    } else {
+                        if (this.nodes[i].distance < candidate[1]) candidate = [i, this.nodes[i].distance]
                     }
                 }
-                if (min === Infinity) {
-                    let next = this.nodes[bi].parent
-                    if (next === undefined) {
-                        return undefined
-                    }
+                if (candidate) {
+                    current = candidate[0]
+                } else {
+                    // 4) no more unvisited nodes left, we are done
+                    // ***
+                    // we may have multiple graphs, which are not connected to each other
+                    // in that case, when traversing the path back to node a, we will encounter a undefined parent and report back that there is no path available
+                    // ***
                     let path = []
+                    let next = this.nodes[bi].parent
                     while (next !== ai) {
+                        if (next === undefined) {
+                            return undefined
+                        }
                         path.push(next)
                         next = this.nodes[next].parent
                     }
-                    path.push(next)
                     return path
-                } else current = mini
+                }
             }
         }
     }
