@@ -1,7 +1,7 @@
 class NetworkAnimationConfig {
     constructor() {
-        this.nodeDensity = 1
-        this.velocityFactor = 8
+        this.nodeDensity = 0.4
+        this.velocityFactor = 0.6
         this.maxConnDistance = 300
         this.nodeColor = "#666688"
         this.nodeRadius = 1.8
@@ -114,7 +114,7 @@ class NetworkAnimation {
                 this.transmission = path
             }
         }
-        setTimeout(this.sendPacket.bind(this), 50)
+        setTimeout(this.sendPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
     }
 
     /*
