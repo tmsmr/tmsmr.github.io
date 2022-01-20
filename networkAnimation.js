@@ -183,6 +183,10 @@ class NetworkAnimation {
     }
 
     startPacket() {
+        if(document.hidden) {
+            setTimeout(this.startPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
+            return
+        }
         if (this.nodes.length >= 2) {
             const ai = Math.floor(Math.random() * this.nodes.length)
             let bi = ai
