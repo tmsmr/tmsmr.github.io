@@ -1,3 +1,35 @@
+/*
+MIT License
+
+Copyright (c) 2021 Thomas Maier
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+
+/*
+There are plenty of JS libs for "particle network animations" available.
+This implementation adds "transmission animations" to the network.
+The goal is to generate an abstract visual representation of complex software architectures including the inter-service communication...
+
+Since i am building this for my personal website, the implementation might not be portable. Feel free to modify it for your needs or ask me for help.
+ */
+
 class NetworkAnimationConfig {
     constructor() {
         this.nodeDensity = 0.4
@@ -121,6 +153,8 @@ class NetworkAnimation {
     to find that path, Dijkstra's algorithm (https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) is used
 
     if there is no path available, undefined is returned
+
+    let's waste some CPU cycles for a meaningless animation... :)
     */
     shortestPath(ai, bi) {
         // we are using the Node class itself to store the algorithm's states:
