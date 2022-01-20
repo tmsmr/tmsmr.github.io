@@ -41,6 +41,7 @@ class NetworkAnimationConfig {
         this.connColor = "#666688"
         this.connLineWidth = 0.4
         this.packetSpawnPeriodMax = 5000
+        this.packetSpeed = 2
     }
 }
 
@@ -50,7 +51,7 @@ class NetworkAnimation {
         this.conf = conf
         this.ctx = this.canvas.getContext('2d')
         this.squaredMaxConnDistance = this.conf.maxConnDistance * this.conf.maxConnDistance
-        this.transmission = undefined
+        this.transmissions = []
         window.addEventListener("resize", this.reset.bind(this))
     }
 
@@ -58,7 +59,7 @@ class NetworkAnimation {
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
         this.alphaFadeState = 0
-        this.transmission = undefined
+        this.transmissions = []
         this.populate()
     }
 
@@ -77,9 +78,21 @@ class NetworkAnimation {
     }
 
     tick() {
+        // update node positions
         for (const node of this.nodes) node.update()
+        // update transmission progresses
+        for (let transmission of this.transmissions) {
+            for (let section of transmission) {
+                if (section[1] < 100) {
+                    section[1] += this.conf.packetSpeed
+                    break
+                }
+            }
+        }
+        // remove finished transmissions
+        this.transmissions = this.transmissions.filter(t => t[t.length - 1][1] < 100)
         if (this.alphaFadeState < 1) {
-            this.alphaFadeState += 0.005
+            this.alphaFadeState += 0.01
         } else {
             this.alphaFadeState = 1
         }
@@ -123,7 +136,7 @@ class NetworkAnimation {
             }
         }
 
-        this.ctx.strokeStyle = "#4444AA"
+        /*this.ctx.strokeStyle = "#4444AA"
         this.ctx.lineWidth = 2
         if (this.transmission) {
             for (let i = 0; i < this.transmission.length - 1; i++) {
@@ -135,12 +148,12 @@ class NetworkAnimation {
                 this.ctx.globalAlpha = this.alphaFadeState
                 this.ctx.stroke();
             }
-        }
+        }*/
 
         window.requestAnimationFrame(this.draw.bind(this));
     }
 
-    sendPacket() {
+    startPacket() {
         if (this.nodes.length >= 2) {
             const ai = Math.floor(Math.random() * this.nodes.length)
             let bi = ai
@@ -148,10 +161,20 @@ class NetworkAnimation {
 
             const path = this.shortestPath(ai, bi)
             if (path) {
-                this.transmission = path
+                let transmission = []
+                for (let section of path) {
+                    transmission.push([section, 0])
+                }
+                transmission[0][1] = 100
+                this.transmissions.push(transmission)
             }
         }
-        setTimeout(this.sendPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
+        setTimeout(this.startPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
+    }
+
+    reportTransmissions() {
+        console.log(this.transmissions)
+        setTimeout(this.reportTransmissions.bind(this), 1000)
     }
 
     /*
@@ -226,6 +249,7 @@ class NetworkAnimation {
                     // in that case, when traversing the path back to node a, we will encounter a undefined parent and report back that there is no path available
                     // ***
                     let path = []
+                    path.push(bi)
                     let next = this.nodes[bi].parent
                     while (next !== ai) {
                         if (next === undefined) {
@@ -234,7 +258,8 @@ class NetworkAnimation {
                         path.push(next)
                         next = this.nodes[next].parent
                     }
-                    return path
+                    path.push(next)
+                    return path.reverse()
                 }
             }
         }
@@ -243,7 +268,8 @@ class NetworkAnimation {
     start() {
         this.reset();
         this.tick();
-        this.sendPacket();
+        this.startPacket();
+        this.reportTransmissions()
         this.draw();
     }
 }
