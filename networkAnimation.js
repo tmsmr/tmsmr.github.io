@@ -104,11 +104,6 @@ class NetworkAnimation {
     }
 
     draw() {
-        if(document.hidden) {
-            window.requestAnimationFrame(this.draw.bind(this))
-            return
-        }
-
         if (this.nodes.length < 1) {
             window.requestAnimationFrame(this.draw.bind(this))
             return;
