@@ -32,6 +32,7 @@ Since i am building this for my personal website, the implementation might not b
 
 class NetworkAnimationConfig {
     constructor() {
+        this.updatePeriodMs = 20
         this.nodeDensity = 0.4
         this.velocityFactor = 0.6
         this.maxConnDistance = 300
@@ -62,28 +63,33 @@ class NetworkAnimation {
     }
 
     populate() {
-        this.nodes = []
+        let nodes = []
         let count = (this.canvas.width * this.canvas.height) / (100 * 100)
         count *= this.conf.nodeDensity
         count = Math.floor(count)
         for (let i = 0; i < count; i++) {
-            this.nodes[i] = new Node(
+            nodes[i] = new Node(
                 [this.canvas.width, this.canvas.height],
                 this.conf.velocityFactor
             )
         }
+        this.nodes = nodes
+    }
+
+    tick() {
+        for (const node of this.nodes) node.update()
+        if (this.alphaFadeState < 1) {
+            this.alphaFadeState += 0.005
+        } else {
+            this.alphaFadeState = 1
+        }
+        setTimeout(this.tick.bind(this), this.conf.updatePeriodMs)
     }
 
     draw() {
         if (this.nodes.length < 1) {
             window.requestAnimationFrame(this.draw.bind(this));
             return;
-        }
-        for (const node of this.nodes) node.update()
-        if (this.alphaFadeState < 1) {
-            this.alphaFadeState += 0.005
-        } else {
-            this.alphaFadeState = 1
         }
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -157,7 +163,7 @@ class NetworkAnimation {
     let's waste some CPU cycles for a meaningless animation... :)
     */
     shortestPath(ai, bi) {
-        // we are using the Node class itself to store the algorithm's states:
+        // we are using the Node class itself to store the algorithm's states (hooray, side-effects):
         // - visited (false): this node was processed already
         // - distance (Infinity): the current smallest distance to node a
         // - parent (undefined): index of the next parent in the found path
@@ -234,8 +240,9 @@ class NetworkAnimation {
         }
     }
 
-    animate() {
+    start() {
         this.reset();
+        this.tick();
         this.sendPacket();
         this.draw();
     }
