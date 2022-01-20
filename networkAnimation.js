@@ -161,20 +161,20 @@ class NetworkAnimation {
             this.ctx.fill()
         }
 
-        /*this.ctx.strokeStyle = "#4444AA"
-        this.ctx.lineWidth = 2
-        if (this.transmission) {
-            for (let i = 0; i < this.transmission.length - 1; i++) {
-                let a = this.nodes[this.transmission[i]]
-                let b = this.nodes[this.transmission[i + 1]]
+        this.ctx.strokeStyle = this.conf.connColor
+        this.ctx.lineWidth = this.conf.connLineWidth
+        this.ctx.globalAlpha = this.alphaFadeState
+        this.ctx.lineWidth = this.conf.connLineWidth * 2
+        for (let transmission of this.transmissions) {
+            for (let i = 1; i < transmission.length; i++) {
+                let a = this.nodes[transmission[i - 1][0]]
+                let b = this.nodes[transmission[i][0]]
                 this.ctx.beginPath();
                 this.ctx.moveTo(a.x, a.y);
                 this.ctx.lineTo(b.x, b.y);
-                this.ctx.globalAlpha = this.alphaFadeState
                 this.ctx.stroke();
             }
-        }*/
-
+        }
         window.requestAnimationFrame(this.draw.bind(this));
     }
 
