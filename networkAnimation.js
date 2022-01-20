@@ -41,7 +41,7 @@ class NetworkAnimationConfig {
         this.connColor = "#666688"
         this.connLineWidth = 0.4
         this.packetSpawnPeriodMax = 5000
-        this.packetSpeed = 2
+        this.packetSpeed = 1
     }
 }
 
@@ -136,6 +136,31 @@ class NetworkAnimation {
             }
         }
 
+        this.ctx.globalAlpha = 1 * this.alphaFadeState
+        this.ctx.fillStyle = "#2222FF"
+        for (let transmission of this.transmissions) {
+            let ai = undefined, bi = undefined
+            let progress = undefined
+            for (let i = 0; i < transmission.length; i++) {
+                if(transmission[i][1] < 100) {
+                    ai = transmission[i-1][0]
+                    bi = transmission[i][0]
+                    progress = transmission[i][1]
+                    break
+                }
+            }
+            let edgepos = [(this.nodes[bi].x - this.nodes[ai].x) * progress * 0.01, (this.nodes[bi].y - this.nodes[ai].y) * progress * 0.01]
+            this.ctx.beginPath();
+            this.ctx.arc(
+                edgepos[0] + this.nodes[ai].x,
+                edgepos[1] + this.nodes[ai].y,
+                this.conf.nodeRadius * 2,
+                0,
+                2 * Math.PI
+            );
+            this.ctx.fill()
+        }
+
         /*this.ctx.strokeStyle = "#4444AA"
         this.ctx.lineWidth = 2
         if (this.transmission) {
@@ -173,7 +198,6 @@ class NetworkAnimation {
     }
 
     reportTransmissions() {
-        console.log(this.transmissions)
         setTimeout(this.reportTransmissions.bind(this), 1000)
     }
 
