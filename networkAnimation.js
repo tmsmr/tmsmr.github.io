@@ -32,16 +32,16 @@ Since i am building this for my personal website, the implementation might not b
 
 class NetworkAnimationConfig {
     constructor() {
-        this.updatePeriodMs = 20
-        this.nodeDensity = 0.4
-        this.velocityFactor = 0.6
-        this.maxConnDistance = 300
+        this.updatePeriodMs = 10
+        this.nodeDensity = 0.2
+        this.velocityFactor = 1
+        this.maxConnDistance = 500
         this.nodeColor = "#666688"
         this.nodeRadius = 1.8
         this.connColor = "#666688"
         this.connLineWidth = 0.4
         this.packetSpawnPeriodMax = 1000
-        this.packetSpeed = 10
+        this.packetSpeed = 2
     }
 }
 
@@ -78,6 +78,10 @@ class NetworkAnimation {
     }
 
     tick() {
+        if(document.hidden) {
+            setTimeout(this.tick.bind(this), this.conf.updatePeriodMs)
+            return
+        }
         // update node positions
         for (const node of this.nodes) node.update()
         // update transmission progresses
@@ -100,8 +104,13 @@ class NetworkAnimation {
     }
 
     draw() {
+        if(document.hidden) {
+            window.requestAnimationFrame(this.draw.bind(this))
+            return
+        }
+
         if (this.nodes.length < 1) {
-            window.requestAnimationFrame(this.draw.bind(this));
+            window.requestAnimationFrame(this.draw.bind(this))
             return;
         }
 
