@@ -40,8 +40,8 @@ class NetworkAnimationConfig {
         this.nodeRadius = 1.8
         this.connColor = "#666688"
         this.connLineWidth = 0.4
-        this.packetSpawnPeriodMax = 5000
-        this.packetSpeed = 1
+        this.packetSpawnPeriodMax = 1000
+        this.packetSpeed = 10
     }
 }
 
