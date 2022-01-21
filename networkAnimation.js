@@ -193,7 +193,7 @@ class NetworkAnimation {
         // active connections
         this.ctx.lineWidth = this.conf.connLineWidth
         this.ctx.globalAlpha = this.alphaFadeState
-        this.ctx.lineWidth = this.conf.connLineWidth * 2.5
+        this.ctx.lineWidth = this.conf.connLineWidth * 2
         for (let transmission of this.transmissions) {
             if (transmission[0][1][1] < 100) {
                 this.ctx.globalAlpha = this.alphaFadeState * (transmission[0][1][1]/100)
