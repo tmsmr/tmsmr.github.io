@@ -33,14 +33,14 @@ Since i am building this for my personal website, the implementation might not b
 class NetworkAnimationConfig {
     constructor() {
         this.updatePeriodMs = 10
-        this.nodeDensity = 0.2
-        this.velocityFactor = 0.2
+        this.nodeDensity = 0.25
+        this.velocityFactor = 0.1
         this.maxConnDistance = 500
         this.nodeColor = "#666688"
         this.nodeRadius = 1.6
         this.connColor = "#666688"
         this.connLineWidth = 0.4
-        this.packetSpawnPeriodMax = 4000
+        this.packetSpawnPeriodMax = 2000
         this.packetSpeed = 2
         this.packetColorA = "#00cc66"
         this.packetColorB = "#3399ff"
@@ -113,6 +113,7 @@ class NetworkAnimation {
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
+        // nodes
         this.ctx.globalAlpha = 1 * this.alphaFadeState
         this.ctx.fillStyle = this.conf.nodeColor
         for (const node of this.nodes) {
@@ -127,6 +128,7 @@ class NetworkAnimation {
             this.ctx.fill();
         }
 
+        // normal connections
         this.ctx.strokeStyle = this.conf.connColor
         this.ctx.lineWidth = this.conf.connLineWidth
         for (let i = 0; i < this.nodes.length; i++) {
@@ -142,9 +144,31 @@ class NetworkAnimation {
             }
         }
 
-        this.ctx.globalAlpha = 1 * this.alphaFadeState
+        // transmissions
+        this.ctx.globalAlpha = this.alphaFadeState
         for (let transmission of this.transmissions) {
+            if (transmission[0][1][1] < 100) {
+                this.ctx.globalAlpha = this.alphaFadeState * (transmission[0][1][1]/100)
+            }
+            if (transmission[0][transmission[0].length - 1][1] > 0) {
+                this.ctx.globalAlpha = this.alphaFadeState * (1-transmission[0][transmission[0].length - 1][1]/100)
+            }
+            console.log(transmission[0][1][1])
             this.ctx.fillStyle = transmission[1]
+            this.ctx.fillStyle = transmission[1]
+            // start and end node
+            for(let ni of transmission[0]) {
+                let node = this.nodes[ni[0]]
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    node.x,
+                    node.y,
+                    this.conf.nodeRadius * 1.5,
+                    0,
+                    2 * Math.PI
+                );
+                this.ctx.fill();
+            }
             let ai = undefined, bi = undefined
             let progress = undefined
             for (let i = 0; i < transmission[0].length; i++) {
@@ -160,17 +184,24 @@ class NetworkAnimation {
             this.ctx.arc(
                 edgepos[0] + this.nodes[ai].x,
                 edgepos[1] + this.nodes[ai].y,
-                this.conf.nodeRadius * 1.8,
+                this.conf.nodeRadius * 1.5,
                 0,
                 2 * Math.PI
             );
             this.ctx.fill()
         }
 
+        // active connections
         this.ctx.lineWidth = this.conf.connLineWidth
         this.ctx.globalAlpha = this.alphaFadeState
-        this.ctx.lineWidth = this.conf.connLineWidth * 2
+        this.ctx.lineWidth = this.conf.connLineWidth * 2.5
         for (let transmission of this.transmissions) {
+            if (transmission[0][1][1] < 100) {
+                this.ctx.globalAlpha = this.alphaFadeState * (transmission[0][1][1]/100)
+            }
+            if (transmission[0][transmission[0].length - 1][1] > 0) {
+                this.ctx.globalAlpha = this.alphaFadeState * (1-transmission[0][transmission[0].length - 1][1]/100)
+            }
             this.ctx.strokeStyle = transmission[1]
             for (let i = 1; i < transmission[0].length; i++) {
                 let a = this.nodes[transmission[0][i - 1][0]]
