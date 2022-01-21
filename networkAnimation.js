@@ -36,9 +36,11 @@ class NetworkAnimationConfig {
         this.nodeDensity = 0.25
         this.velocityFactor = 0.1
         this.maxConnDistance = 500
-        this.nodeColor = "#666688"
+        //this.nodeColor = "#666688"
+        this.nodeColor = "#bbb"
         this.nodeRadius = 1.6
-        this.connColor = "#666688"
+        //this.connColor = "#666688"
+        this.connColor = "#ccc"
         this.connLineWidth = 0.4
         this.packetSpawnPeriodMax = 2000
         this.packetSpeed = 2
