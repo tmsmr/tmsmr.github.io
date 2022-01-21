@@ -34,14 +34,16 @@ class NetworkAnimationConfig {
     constructor() {
         this.updatePeriodMs = 10
         this.nodeDensity = 0.2
-        this.velocityFactor = 1
+        this.velocityFactor = 0.2
         this.maxConnDistance = 500
         this.nodeColor = "#666688"
-        this.nodeRadius = 1.8
+        this.nodeRadius = 1.6
         this.connColor = "#666688"
         this.connLineWidth = 0.4
-        this.packetSpawnPeriodMax = 1000
+        this.packetSpawnPeriodMax = 4000
         this.packetSpeed = 2
+        this.packetColorA = "#00cc66"
+        this.packetColorB = "#3399ff"
     }
 }
 
@@ -78,7 +80,7 @@ class NetworkAnimation {
     }
 
     tick() {
-        if(document.hidden) {
+        if (document.hidden) {
             setTimeout(this.tick.bind(this), this.conf.updatePeriodMs)
             return
         }
@@ -86,7 +88,7 @@ class NetworkAnimation {
         for (const node of this.nodes) node.update()
         // update transmission progresses
         for (let transmission of this.transmissions) {
-            for (let section of transmission) {
+            for (let section of transmission[0]) {
                 if (section[1] < 100) {
                     section[1] += this.conf.packetSpeed
                     break
@@ -94,7 +96,7 @@ class NetworkAnimation {
             }
         }
         // remove finished transmissions
-        this.transmissions = this.transmissions.filter(t => t[t.length - 1][1] < 100)
+        this.transmissions = this.transmissions.filter(t => t[0][t[0].length - 1][1] < 100)
         if (this.alphaFadeState < 1) {
             this.alphaFadeState += 0.01
         } else {
@@ -141,15 +143,15 @@ class NetworkAnimation {
         }
 
         this.ctx.globalAlpha = 1 * this.alphaFadeState
-        this.ctx.fillStyle = "#2222FF"
         for (let transmission of this.transmissions) {
+            this.ctx.fillStyle = transmission[1]
             let ai = undefined, bi = undefined
             let progress = undefined
-            for (let i = 0; i < transmission.length; i++) {
-                if(transmission[i][1] < 100) {
-                    ai = transmission[i-1][0]
-                    bi = transmission[i][0]
-                    progress = transmission[i][1]
+            for (let i = 0; i < transmission[0].length; i++) {
+                if (transmission[0][i][1] < 100) {
+                    ai = transmission[0][i - 1][0]
+                    bi = transmission[0][i][0]
+                    progress = transmission[0][i][1]
                     break
                 }
             }
@@ -158,21 +160,21 @@ class NetworkAnimation {
             this.ctx.arc(
                 edgepos[0] + this.nodes[ai].x,
                 edgepos[1] + this.nodes[ai].y,
-                this.conf.nodeRadius * 2,
+                this.conf.nodeRadius * 1.8,
                 0,
                 2 * Math.PI
             );
             this.ctx.fill()
         }
 
-        this.ctx.strokeStyle = this.conf.connColor
         this.ctx.lineWidth = this.conf.connLineWidth
         this.ctx.globalAlpha = this.alphaFadeState
         this.ctx.lineWidth = this.conf.connLineWidth * 2
         for (let transmission of this.transmissions) {
-            for (let i = 1; i < transmission.length; i++) {
-                let a = this.nodes[transmission[i - 1][0]]
-                let b = this.nodes[transmission[i][0]]
+            this.ctx.strokeStyle = transmission[1]
+            for (let i = 1; i < transmission[0].length; i++) {
+                let a = this.nodes[transmission[0][i - 1][0]]
+                let b = this.nodes[transmission[0][i][0]]
                 this.ctx.beginPath();
                 this.ctx.moveTo(a.x, a.y);
                 this.ctx.lineTo(b.x, b.y);
@@ -183,7 +185,7 @@ class NetworkAnimation {
     }
 
     startPacket() {
-        if(document.hidden) {
+        if (document.hidden) {
             setTimeout(this.startPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
             return
         }
@@ -199,7 +201,8 @@ class NetworkAnimation {
                     transmission.push([section, 0])
                 }
                 transmission[0][1] = 100
-                this.transmissions.push(transmission)
+                const color = Helpers.gradientColor(this.conf.packetColorA, this.conf.packetColorB, Math.random())
+                this.transmissions.push([transmission, color])
             }
         }
         setTimeout(this.startPacket.bind(this), Math.random() * this.conf.packetSpawnPeriodMax)
@@ -336,5 +339,22 @@ class Node {
         this.visited = false
         this.distance = Infinity
         this.parent = undefined
+    }
+}
+
+class Helpers {
+    static toHexStr(v) {
+        v = v.toString(16);
+        return (v.length === 1) ? '0' + v : v;
+    }
+
+    static gradientColor(c1, c2, pos) {
+        c1 = c1.replace("#", "")
+        c2 = c2.replace("#", "")
+        let r = parseInt(c1.substring(0, 2), 16) * pos + parseInt(c2.substring(0,2), 16) * (1-pos)
+        let g = parseInt(c1.substring(2, 4), 16) * pos + parseInt(c2.substring(2,4), 16) * (1-pos)
+        let b = parseInt(c1.substring(4, 6), 16) * pos + parseInt(c2.substring(4,6), 16) * (1-pos)
+
+        return "#" + Helpers.toHexStr(Math.ceil(r)) + Helpers.toHexStr(Math.ceil(g)) + Helpers.toHexStr(Math.ceil(b))
     }
 }
