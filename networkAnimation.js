@@ -153,7 +153,6 @@ class NetworkAnimation {
             if (transmission[0][transmission[0].length - 1][1] > 0) {
                 this.ctx.globalAlpha = this.alphaFadeState * (1-transmission[0][transmission[0].length - 1][1]/100)
             }
-            console.log(transmission[0][1][1])
             this.ctx.fillStyle = transmission[1]
             this.ctx.fillStyle = transmission[1]
             // start and end node
