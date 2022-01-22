@@ -195,7 +195,7 @@ class NetworkAnimation {
         // active connections
         this.ctx.lineWidth = this.conf.connLineWidth
         this.ctx.globalAlpha = this.alphaFadeState
-        this.ctx.lineWidth = this.conf.connLineWidth * 2
+        this.ctx.lineWidth = this.conf.connLineWidth * 2.5
         for (let transmission of this.transmissions) {
             if (transmission[0][1][1] < 100) {
                 this.ctx.globalAlpha = this.alphaFadeState * (transmission[0][1][1]/100)
@@ -207,6 +207,7 @@ class NetworkAnimation {
             for (let i = 1; i < transmission[0].length; i++) {
                 let a = this.nodes[transmission[0][i - 1][0]]
                 let b = this.nodes[transmission[0][i][0]]
+                this.ctx.globalAlpha = (this.ctx.globalAlpha * 2 + ((1 - a.squaredDistance(b) / this.squaredMaxConnDistance))) / 3
                 this.ctx.beginPath();
                 this.ctx.moveTo(a.x, a.y);
                 this.ctx.lineTo(b.x, b.y);
