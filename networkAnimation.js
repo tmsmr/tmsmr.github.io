@@ -204,10 +204,11 @@ class NetworkAnimation {
                 this.ctx.globalAlpha = this.alphaFadeState * (1-transmission[0][transmission[0].length - 1][1]/100)
             }
             this.ctx.strokeStyle = transmission[1]
+            let baselineAlpha = this.ctx.globalAlpha
             for (let i = 1; i < transmission[0].length; i++) {
                 let a = this.nodes[transmission[0][i - 1][0]]
                 let b = this.nodes[transmission[0][i][0]]
-                this.ctx.globalAlpha = (this.ctx.globalAlpha * 2 + ((1 - a.squaredDistance(b) / this.squaredMaxConnDistance))) / 3
+                this.ctx.globalAlpha = baselineAlpha * ((((1 - a.squaredDistance(b) / this.squaredMaxConnDistance)) + 1)/2)
                 this.ctx.beginPath();
                 this.ctx.moveTo(a.x, a.y);
                 this.ctx.lineTo(b.x, b.y);
