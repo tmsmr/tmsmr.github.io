@@ -3,14 +3,24 @@
     <title>tmsmr.de</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
+    <script src="yapa.js"></script>
 </head>
 <body>
-<canvas id="network" style="z-index: -1; position: absolute; left: 0; top: 0;"></canvas>
+<div id="network"></div>
 </body>
-<script src="networkAnimation.js"></script>
 <script type="text/javascript" defer>
-    const conf = new NetworkAnimationConfig()
-    const net = new NetworkAnimation(document.getElementById("network"), conf)
-    net.start()
+    const conf = new YapaConfig();
+    conf.nodeDensityFactor = 0.4;
+    conf.nodeVelocityFactor = 0.2;
+    conf.maxConnDistance = 300;
+    conf.nodeColor = "#888";
+    conf.connLineWidth = 0.8;
+    conf.transmissionSpawnPeriodMaxMs = 2000;
+    conf.trasmissionColorA = "#00cc66";
+    conf.trasmissionColorB = "#3399ff";
+    conf.transmissionWidthFactor = 1.4;
+    const container = document.getElementById("network");
+    const net = new Yapa(container, conf);
+    net.start();
 </script>
 </html>
