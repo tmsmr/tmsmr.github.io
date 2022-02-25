@@ -3,16 +3,16 @@
     <title>tmsmr.de</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
-    <script src="yapa.js"></script>
+    <script src="https://tmsmr.github.io/yapa/yapa.min.js"></script>
 </head>
 <body>
 <div id="network"></div>
 </body>
 <script type="text/javascript" defer>
     const conf = new YapaConfig();
-    conf.nodeDensityFactor = 0.4;
+    conf.nodeDensityFactor = 0.2;
     conf.nodeVelocityFactor = 0.2;
-    conf.maxConnDistance = 300;
+    conf.maxConnDistance = 500;
     conf.nodeColor = "#888";
     conf.connLineWidth = 0.8;
     conf.transmissionSpawnPeriodMaxMs = 2000;
