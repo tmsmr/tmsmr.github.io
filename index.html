@@ -3,36 +3,30 @@
     <title>thomas-maier.net</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
+    <script src="https://yapa.tmsmr.de/versions/yapa-0.9.1.js"
+            integrity="sha384-mxa2kC7J33fN+0TUBOIi4nAehBtMGrILGkhs2c5BFnmV4qBLA2Qpj1XpIxs7sLH9"
+            crossorigin="anonymous"
+    ></script>
 </head>
 <body>
-<div id="yapa"></div>
-<script src="https://yapa.tmsmr.de/versions/yapa-0.9.1.js"
-        integrity="sha384-mxa2kC7J33fN+0TUBOIi4nAehBtMGrILGkhs2c5BFnmV4qBLA2Qpj1XpIxs7sLH9"
-        crossorigin="anonymous"
-></script>
-<script type="text/javascript">
-    const conf = new YapaConfig();
-    conf.updatePeriodMs = 10;
-    conf.fadeInDurationMs = 2000;
-    conf.nodeDensityFactor = 1;
-    conf.nodeVelocityFactor = 0.4;
-    conf.nodeRadius = 2;
-    conf.nodeColor = "#BBBBBB";
-    conf.connsEnabled = true;
-    conf.maxConnDistance = 160;
-    conf.connLineWidth = 1;
-    conf.connColor = "#888888";
-    conf.transmissionsEnabled = true;
-    conf.transmissionSpawnPeriodMaxMs = 4000;
-    conf.transmissionSpeedFactor = 1.4;
-    conf.trasmissionColorA = "#00CC66";
-    conf.trasmissionColorB = "#3399FF";
-    conf.transmissionWidthFactor = 1.6;
-    conf.transmissionsDrawPackets = true;
-
-    const container = document.getElementById("yapa");
-    const yapa = new Yapa(container, conf);
-    yapa.start();
-</script>
+<div id="content">
+    <div style="width: 100px; height: 100px;"></div>
+</div>
+<div id="yapa_tl"></div>
+<div id="yapa_br"></div>´
 </body>
+<script type="text/javascript">
+    const yapaConf = new YapaConfig()
+    yapaConf.connLineWidth = .8;
+    yapaConf.nodeRadius = 1.4;
+    yapaConf.fadeInDurationMs = 4000;
+    yapaConf.maxConnDistance = 280;
+    yapaConf.nodeDensityFactor = .6;
+    yapaConf.nodeVelocityFactor = .08;
+    yapaConf.maxConnDistance = 200;
+    yapaConf.transmissionSpeedFactor = 1.8;
+    yapaConf.transmissionSpawnPeriodMaxMs = 6000;
+    new Yapa(document.getElementById("yapa_tl"), yapaConf).start();
+    new Yapa(document.getElementById("yapa_br"), yapaConf).start();
+</script>
 </html>
