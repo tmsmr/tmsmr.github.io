@@ -30,16 +30,16 @@ html, body {
 
 #yapa_tl {
     position: absolute;
-    top: 5%;
-    left: -5%;
-    width: 40%;
-    height: 40%;
+    top: -1%;
+    left: -1%;
+    width: 55%;
+    height: 55%;
 }
 
 #yapa_br {
     position: absolute;
-    bottom: -5%;
-    right: -5%;
-    width: 40%;
-    height: 40%;
+    bottom: -1%;
+    right: -1%;
+    width: 55%;
+    height: 55%;
 }
