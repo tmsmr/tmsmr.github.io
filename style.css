@@ -3,21 +3,42 @@
     --primary-light: #222;
     --bg-light: #EEE;
     --shaded-light: #CCC;
-    --primary-dark: #EEE;
     /*dark*/
+    --primary-dark: #EEE;
     --bg-dark: #222;
     --shaded-dark: #444;
     /*accent*/
     --accent-a: #00CC66;
     --accent-b: #3399FF;
+    /*sizing*/
+    --card-width: 400px;
 }
 
 html, body {
     margin: 0;
+    color: var(--primary-light);
     background-color: var(--bg-light);
+    font-family: 'Open Sans', sans-serif;
+}
+
+.theme-shaded {
+    background-color: var(--shaded-light);
+    border-color: var(--shaded-light);
+}
+
+@media (prefers-color-scheme: dark) {
+    html, body {
+        color: var(--primary-dark);
+        background-color: var(--bg-dark);
+    }
+    .theme-shaded {
+        background-color: var(--shaded-dark);
+        border-color: var(--shaded-dark);
+    }
 }
 
 #content {
+    z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
@@ -28,18 +49,36 @@ html, body {
     align-items: center;
 }
 
-#yapa_tl {
-    position: absolute;
-    top: -1%;
-    left: -1%;
-    width: 55%;
-    height: 55%;
+#picture {
+    position: relative;
+    top: -128px;
+    left: calc(var(--card-width) / 2 - 64px);
+    width: 128px;
+    height: 128px;
+    border-radius: 66px;
+    border-width: 2px;
+    border-style: solid;
 }
 
-#yapa_br {
+#card {
+    padding-top: 64px;
+    display: flex;
+    width: var(--card-width);
+    border-radius: 0 32px 0 32px;
+}
+
+#yapa_l {
     position: absolute;
-    bottom: -1%;
-    right: -1%;
-    width: 55%;
-    height: 55%;
+    top: -5%;
+    left: -5%;
+    width: 25%;
+    min-height: 110%;
+}
+
+#yapa_r {
+    position: absolute;
+    top: -5%;
+    right: -5%;
+    width: 25%;
+    min-height: 110%;
 }

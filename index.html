@@ -3,30 +3,42 @@
     <title>thomas-maier.net</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300" rel="stylesheet">
     <script src="https://yapa.tmsmr.de/versions/yapa-0.9.1.js"
             integrity="sha384-mxa2kC7J33fN+0TUBOIi4nAehBtMGrILGkhs2c5BFnmV4qBLA2Qpj1XpIxs7sLH9"
             crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
 </head>
 <body>
 <div id="content">
-    <div style="width: 100px; height: 100px;"></div>
+    <div id="card" class="theme-shaded">
+        <img src="https://avatars.githubusercontent.com/u/760630" alt="profile picture" id="picture" class="theme-shaded"/>
+        <h2>Thomas Maier</h2>
+    </div>
 </div>
-<div id="yapa_tl"></div>
-<div id="yapa_br"></div>´
+<div id="yapa_l"></div>
+<div id="yapa_r"></div>
 </body>
 <script type="text/javascript">
-    const yapaConf = new YapaConfig()
-    yapaConf.connLineWidth = .8;
-    yapaConf.nodeRadius = 1.4;
-    yapaConf.fadeInDurationMs = 4000;
-    yapaConf.maxConnDistance = 280;
-    yapaConf.nodeDensityFactor = .4;
-    yapaConf.nodeVelocityFactor = .08;
-    yapaConf.maxConnDistance = 260;
-    yapaConf.transmissionSpeedFactor = 1.8;
-    yapaConf.transmissionSpawnPeriodMaxMs = 6000;
-    new Yapa(document.getElementById("yapa_tl"), yapaConf).start();
-    new Yapa(document.getElementById("yapa_br"), yapaConf).start();
+    if (!new MobileDetect(window.navigator.userAgent).mobile()) {
+        const cnf = new YapaConfig()
+        cnf.nodeColor = "#999"
+        cnf.connColor = "#888"
+        cnf.connLineWidth = .8;
+        cnf.nodeRadius = 1.4;
+        cnf.fadeInDurationMs = 4000;
+        cnf.maxConnDistance = 280;
+        cnf.nodeDensityFactor = .8;
+        cnf.nodeVelocityFactor = .08;
+        cnf.maxConnDistance = 160;
+        cnf.transmissionSpeedFactor = 1.8;
+        cnf.transmissionSpawnPeriodMaxMs = 6000;
+        cnf.transmissionWidthFactor = 1.6;
+        cnf.transmissionsEnabled = false;
+        new Yapa(document.getElementById("yapa_l"), cnf).start();
+        new Yapa(document.getElementById("yapa_r"), cnf).start();
+        setTimeout(() => cnf.transmissionsEnabled = true, 5000);
+    }
 </script>
 </html>
