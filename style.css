@@ -1,40 +1,66 @@
 :root {
-    /*light*/
-    --primary-light: #222;
-    --bg-light: #EEE;
-    --shaded-light: #CCC;
-    /*dark*/
-    --primary-dark: #EEE;
-    --bg-dark: #222;
-    --shaded-dark: #444;
-    /*accent*/
+    --primary: #333333;
+    --links: #444444;
+    --bg: #EFEFEF;
+    --bg-center: #FFFFFF;
+    --shaded: #F9F9F9;
+    --border: #EEEEEE;
     --accent-a: #00CC66;
     --accent-b: #3399FF;
-    /*sizing*/
-    --card-width: 400px;
+    --card-width: 460px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #CCCCCC;
+        --links: #AAAAAA;
+        --bg: #3E3E3E;
+        --bg-center: #333333;
+        --shaded: #343434;
+        --border: #555555;
+    }
 }
 
 html, body {
     margin: 0;
-    color: var(--primary-light);
-    background-color: var(--bg-light);
+    color: var(--primary);
+    background: radial-gradient(ellipse at center, var(--bg-center) 0%, var(--bg) 100%);
     font-family: 'Open Sans', sans-serif;
 }
 
-.theme-shaded {
-    background-color: var(--shaded-light);
-    border-color: var(--shaded-light);
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.5s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-    html, body {
-        color: var(--primary-dark);
-        background-color: var(--bg-dark);
-    }
-    .theme-shaded {
-        background-color: var(--shaded-dark);
-        border-color: var(--shaded-dark);
-    }
+a:hover {
+    color: var(--accent-a);
+}
+
+.shadow {
+    -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.profilelink {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: var(--links);
+}
+
+.linklabel {
+    padding: 2px 8px 4px;
+    border-radius: 12px;
+    color: var(--bg);
+    background-color: var(--links);
+    opacity: 0.6;
+    text-align: center;
+}
+
+.spacer {
+    margin: 16px;
 }
 
 #content {
@@ -51,27 +77,33 @@ html, body {
 
 #picture {
     position: relative;
-    top: -128px;
+    top: -64px;
+    margin-bottom: -64px;
     left: calc(var(--card-width) / 2 - 64px);
     width: 128px;
     height: 128px;
-    border-radius: 66px;
-    border-width: 2px;
-    border-style: solid;
+    border-radius: 64px;
 }
 
 #card {
-    padding-top: 64px;
-    display: flex;
     width: var(--card-width);
-    border-radius: 0 32px 0 32px;
+    border-radius: 0 64px 0 64px;
+    background-color: var(--shaded);
+    border: 1px solid var(--border);
+}
+
+#card_content {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
 }
 
 #yapa_l {
     position: absolute;
     top: -5%;
     left: -5%;
-    width: 25%;
+    width: 35%;
     min-height: 110%;
 }
 
@@ -79,6 +111,6 @@ html, body {
     position: absolute;
     top: -5%;
     right: -5%;
-    width: 25%;
+    width: 35%;
     min-height: 110%;
 }

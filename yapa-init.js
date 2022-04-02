@@ -7,9 +7,9 @@ if (!new MobileDetect(window.navigator.userAgent).mobile()) {
     cnf.fadeInDurationMs = 4000;
     cnf.maxConnDistance = 280;
     cnf.nodeDensityFactor = .8;
-    cnf.nodeVelocityFactor = .08;
+    cnf.nodeVelocityFactor = .14;
     cnf.maxConnDistance = 160;
-    cnf.transmissionSpeedFactor = 1.8;
+    cnf.transmissionSpeedFactor = 2;
     cnf.transmissionSpawnPeriodMaxMs = 6000;
     cnf.transmissionWidthFactor = 1.6;
     cnf.transmissionsEnabled = false;
