@@ -7,7 +7,7 @@
     --border: #EEEEEE;
     --accent-a: #00CC66;
     --accent-b: #3399FF;
-    --card-width: 460px;
+    --card-width: 440px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +21,12 @@
     }
 }
 
-html, body {
+html {
+    margin: 0;
+    background-color: var(--bg);
+}
+
+body {
     margin: 0;
     color: var(--primary);
     background: radial-gradient(ellipse at center, var(--bg-center) 0%, var(--bg) 100%);
@@ -81,9 +86,9 @@ a:hover {
 }
 
 #card {
-    margin-top: 64px;
+    margin-top: 128px;
     width: var(--card-width);
-    border-radius: 0 64px 0 64px;
+    border-radius: 8px;
     background-color: var(--shaded);
     border: 1px solid var(--border);
 }
@@ -97,16 +102,13 @@ a:hover {
 
 #yapa_l {
     position: absolute;
-    top: -5%;
-    left: -5%;
-    width: 35%;
-    min-height: 110%;
+    width: 30%;
+    min-height: 100%;
 }
 
 #yapa_r {
     position: absolute;
-    top: -5%;
-    right: -5%;
-    width: 35%;
-    min-height: 110%;
+    right: 0;
+    width: 30%;
+    min-height: 100%;
 }
