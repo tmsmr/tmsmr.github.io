@@ -44,9 +44,9 @@ a:hover {
 }
 
 .shadow {
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
 .profilelink {
