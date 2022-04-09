@@ -42,9 +42,9 @@ a:hover {
 }
 
 .shadow {
-    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 4px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 .profilelink {
@@ -66,8 +66,8 @@ a:hover {
     position: absolute;
     top: 0;
     left: 0;
-    min-height: 100%;
-    min-width: 100%;
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,7 +77,7 @@ a:hover {
     position: relative;
     top: -64px;
     margin-bottom: -64px;
-    left: calc(var(--card-width) / 2 - 64px);
+    left: calc(50% - 64px);
     width: 128px;
     height: 128px;
     border-radius: 64px;
@@ -85,7 +85,9 @@ a:hover {
 
 #card {
     margin-top: 128px;
+    margin-bottom: 64px;
     width: var(--card-width);
+    max-width: 90%;
     border-radius: 8px;
     background-color: var(--shaded);
 }
