@@ -101,13 +101,13 @@ a:hover {
 
 #yapa_l {
     position: absolute;
-    width: 30%;
+    width: 32%;
     min-height: 100%;
 }
 
 #yapa_r {
     position: absolute;
     right: 0;
-    width: 30%;
+    width: 32%;
     min-height: 100%;
 }
