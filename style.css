@@ -1,6 +1,6 @@
 :root {
     --primary: #333333;
-    --links: #444444;
+    --links: 68,68,68;
     --bg: #EFEFEF;
     --bg-center: #FFFFFF;
     --shaded: #F9F9F9;
@@ -12,7 +12,7 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --primary: #CCCCCC;
-        --links: #AAAAAA;
+        --links: 170, 170, 170;
         --bg: #3E3E3E;
         --bg-center: #333333;
         --shaded: #343434;
@@ -109,7 +109,7 @@ a:hover {
 a.menuitem {
     text-decoration: none;
     color: var(--shaded);
-    background-color: var(--links);
+    background-color: rgba(var(--links), 0.85);
     padding: 2px 10px;
     margin-left: 12px;
     margin-right: 12px;
