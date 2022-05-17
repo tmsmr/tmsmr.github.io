@@ -1,135 +1,136 @@
 :root {
-    --primary: #333333;
-    --links: 68,68,68;
-    --bg: #EFEFEF;
-    --bg-center: #FFFFFF;
-    --shaded: #F9F9F9;
-    --accent-a: #00CC66;
-    --accent-b: #3399FF;
-    --card-width: 420px;
+  --primary: #333333;
+  --links: 68, 68, 68;
+  --bg: #efefef;
+  --bg-center: #ffffff;
+  --shaded: #f9f9f9;
+  --accent-a: #00cc66;
+  --accent-b: #3399ff;
+  --card-width: 420px;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --primary: #CCCCCC;
-        --links: 170, 170, 170;
-        --bg: #3E3E3E;
-        --bg-center: #333333;
-        --shaded: #343434;
-    }
+  :root {
+    --primary: #cccccc;
+    --links: 170, 170, 170;
+    --bg: #3e3e3e;
+    --bg-center: #333333;
+    --shaded: #343434;
+  }
 }
 
 html {
-    margin: 0;
-    background-color: var(--bg);
+  margin: 0;
+  background-color: var(--bg);
 }
 
 body {
-    margin: 0;
-    color: var(--primary);
-    background: radial-gradient(ellipse at center, var(--bg-center) 0%, var(--bg) 100%);
-    font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  color: var(--primary);
+  background: radial-gradient(
+    ellipse at center,
+    var(--bg-center) 0%,
+    var(--bg) 100%
+  );
+  font-family: "Open Sans", sans-serif;
 }
 
 a {
-    color: var(--primary);
-    text-decoration: none;
-    transition: color 0.25s ease;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.25s ease;
 }
 
 a:hover {
-    color: var(--accent-a);
+  color: var(--accent-a);
 }
 
 .shadow {
-    -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 6px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .profilelink {
-    color: var(--links);
-    text-align: center;
+  color: var(--links);
+  text-align: center;
 }
 
 .linkicon {
-    font-size: 28px;
-    margin-bottom: 8px;
+  font-size: 28px;
+  margin-bottom: 8px;
 }
 
 .spacer {
-    margin: 12px;
+  margin: 12px;
 }
 
 #content {
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #picture {
-    position: relative;
-    top: -64px;
-    margin-bottom: -64px;
-    left: calc(50% - 64px);
-    width: 128px;
-    height: 128px;
-    border-radius: 64px;
+  position: relative;
+  top: -64px;
+  margin-bottom: -64px;
+  left: calc(50% - 64px);
+  width: 128px;
+  height: 128px;
+  border-radius: 64px;
 }
 
 #card {
-    margin-top: 96px;
-    margin-bottom: 32px;
-    min-width: 320px;
-    width: var(--card-width);
-    max-width: 90%;
-    border-radius: 8px;
-    background-color: var(--shaded);
+  margin-top: 96px;
+  margin-bottom: 32px;
+  min-width: 320px;
+  width: var(--card-width);
+  max-width: 90%;
+  background-color: var(--shaded);
 }
 
 #card_content {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
 #menuitems {
-    display: flex;
-    width: 90%;
-    justify-content: center;
+  display: flex;
+  width: 90%;
+  justify-content: center;
 }
 
 a.menuitem {
-    text-decoration: none;
-    color: var(--shaded);
-    background-color: rgba(var(--links), 0.85);
-    padding: 2px 10px;
-    margin-left: 12px;
-    margin-right: 12px;
-    border-radius: 8px;
-    transition: background-color 0.25s ease;
+  text-decoration: none;
+  color: var(--shaded);
+  background-color: rgba(var(--links), 0.85);
+  padding: 2px 10px;
+  margin-left: 12px;
+  margin-right: 12px;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
 }
 
 a.menuitem:hover {
-    background-color: var(--accent-a);
+  background-color: var(--accent-a);
 }
 
 #yapa_l {
-    position: absolute;
-    width: 28%;
-    height: 100%;
+  position: absolute;
+  width: 28%;
+  height: 100%;
 }
 
 #yapa_r {
-    position: absolute;
-    right: 0;
-    width: 28%;
-    height: 100%;
+  position: absolute;
+  right: 0;
+  width: 28%;
+  height: 100%;
 }
