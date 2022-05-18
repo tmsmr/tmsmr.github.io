@@ -4,8 +4,7 @@
     --bg: #EFEFEF;
     --bg-center: #FFFFFF;
     --shaded: #F9F9F9;
-    --accent-a: #00CC66;
-    --accent-b: #3399FF;
+    --accent: #1AB3B3;
     --card-width: 420px;
 }
 
@@ -38,7 +37,7 @@ a {
 }
 
 a:hover {
-    color: var(--accent-a);
+    color: var(--accent);
 }
 
 .border {
@@ -115,7 +114,7 @@ a.menuitem {
 }
 
 a.menuitem:hover {
-    background-color: var(--accent-a);
+    background-color: var(--accent);
 }
 
 #yapa_l {
