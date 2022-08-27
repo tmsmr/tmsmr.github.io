@@ -4,14 +4,13 @@ if (!new MobileDetect(window.navigator.userAgent).mobile()) {
     cnf.connColor = "#888"
     cnf.connLineWidth = .8;
     cnf.nodeRadius = 1.4;
-    cnf.fadeInDurationMs = 4000;
-    cnf.maxConnDistance = 280;
-    cnf.nodeDensityFactor = .8;
-    cnf.nodeVelocityFactor = .14;
-    cnf.maxConnDistance = 160;
-    cnf.transmissionSpeedFactor = 2;
-    cnf.transmissionSpawnPeriodMaxMs = 6000;
-    cnf.transmissionWidthFactor = 1.6;
+    cnf.fadeInDurationMs = 3000;
+    cnf.maxConnDistance = 140;
+    cnf.nodeDensityFactor = 1.2;
+    cnf.nodeVelocityFactor = .2;
+    cnf.transmissionSpeedFactor = 3.0;
+    cnf.transmissionSpawnPeriodMaxMs = 2500;
+    cnf.transmissionWidthFactor = 1.4;
     cnf.transmissionsEnabled = false;
     new Yapa(document.getElementById("yapa_l"), cnf).start();
     new Yapa(document.getElementById("yapa_r"), cnf).start();
