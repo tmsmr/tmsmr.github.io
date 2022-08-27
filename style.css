@@ -110,6 +110,7 @@ span.tag {
     color: var(--primary);
     border-color: var(--primary);
     background-color: var(--shaded);
+    font-size: 12px;
     border: 1px solid;
     border-radius: 6px;
     padding: 2px 10px;
