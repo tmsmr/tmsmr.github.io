@@ -59,7 +59,7 @@ a:hover {
 }
 
 .spacer_s {
-    margin: 6px;
+    margin: 4px;
 }
 
 #content {
@@ -114,8 +114,8 @@ span.tag {
     border: 1px solid;
     border-radius: 6px;
     padding: 2px 10px;
-    margin-left: 6px;
-    margin-right: 6px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 #yapa_l {
